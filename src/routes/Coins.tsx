@@ -2,8 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet";
 import { Link } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
+import { isDarkAtom } from "../atom";
 
 const Container = styled.div`
   padding: 0px 20px;
@@ -53,6 +55,28 @@ const Title = styled.h1`
   font-size: 48px;
   font-weight: 800;
   color: ${(props) => props.theme.accentColor};
+`;
+
+const ThemChange = styled.div`
+  display: block;
+  font-size: 25px;
+  padding: 10px;
+  background-color: ${(props) => props.theme.containerColor};
+  color: ${(props) => props.theme.accentColor};
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+  border-radius: 50%;
+  border: none;
+  a {
+    transition: all 0.2s;
+  }
+  &:hover {
+    cursor: pointer;
+    a {
+      color: ${(props) => props.theme.accentColor};
+    }
+  }
 `;
 
 interface Icoin {

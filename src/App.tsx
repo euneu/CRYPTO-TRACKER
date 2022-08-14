@@ -4,6 +4,8 @@ import { lightTheme, darkTheme } from "./theme";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useState } from "react";
 import { BsSunFill, BsMoonFill } from "react-icons/bs";
+import { useRecoilValue, useSetRecoilState } from "recoil";
+import { isDarkAtom } from "./atom";
 //reset css -> css의 기본값을 모두 제거하는 리셋
 // https://github.com/zacanger/styled-reset/blob/master/src/index.ts <- 설치할 수 있으나
 // 가져와서 사용함
@@ -98,15 +100,17 @@ const ThemChange = styled.div`
 `;
 
 function App() {
-  const [isDarkMode, setIsDarkMode] = useState(false);
-  const toggleDarkMode = () => {
-    setIsDarkMode((prev) => !prev);
-  };
+  const isDarkMode = useRecoilValue(isDarkAtom);
+
+  const setDarkAtom = useSetRecoilState(isDarkAtom);
+  //atom state 값을 업데이트하기 위해
+  const toggleDarkAtom = () => setDarkAtom((prev) => !prev);
+  //atom의 value을 가져올 때
   return (
     // <> </> -> Framgment 라고 불리는 유령 컴포넌트 div 를 대신해서 부모 없이 서로 붙어있을 수 있게 해줌
     <>
       <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-        <ThemChange onClick={toggleDarkMode}>
+        <ThemChange onClick={toggleDarkAtom}>
           {isDarkMode ? <BsSunFill /> : <BsMoonFill />}
         </ThemChange>
         <GlobalStyle />
